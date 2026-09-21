@@ -1,3 +1,5 @@
+import Hub from "@/components/Hub";
+
 export default function Home() {
-  return <div></div>;
+  return <Hub />;
 }
