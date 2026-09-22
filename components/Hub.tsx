@@ -326,7 +326,7 @@ const Screen = () => {
                 </div>
               </div>
 
-              <div className="pt-2">
+              <div className="pt-2 h-">
                 <div className="flex justify-between items-center mb-1.5">
                   <span className="text-xs font-medium opacity-80">
                     Viewport Width Slider
@@ -338,7 +338,7 @@ const Screen = () => {
                 <input
                   type="range"
                   min="320"
-                  max="3840"
+                  max="1440"
                   step="10"
                   value={viewportWidth}
                   onChange={(e) => setViewportWidth(e.target.value)}
