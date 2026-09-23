@@ -135,6 +135,7 @@ const Screen = () => {
 
   const computedPx = conversion.px;
   const isTooSmall = computedPx < 50;
+  const isTiny = computedPx < 70; // Triggers expanded guide offset to prevent small overlap
 
   return (
     <div
@@ -518,16 +519,24 @@ const Screen = () => {
             <div className="relative flex items-center justify-center">
               {computedPx > 0 && (
                 <>
-                  {/* Separate plane: Width Guide on Top */}
-                  <div className="absolute -top-7 left-0 right-0 flex items-center justify-center select-none pointer-events-none">
+                  {/* Separate plane: Width Guide on Top (Dynamically expands outward when box is tiny) */}
+                  <div
+                    className={`absolute left-0 right-0 flex items-center justify-center select-none pointer-events-none transition-all duration-200 ${
+                      isTiny ? "-top-12" : "-top-7"
+                    }`}
+                  >
                     <div className="h-px bg-zinc-500/60 w-full absolute"></div>
                     <span className="bg-zinc-900 text-zinc-200 border border-zinc-700 text-[10px] font-mono px-2 py-0.5 rounded z-10 shadow-sm whitespace-nowrap">
                       w: {Math.round(computedPx)}px
                     </span>
                   </div>
 
-                  {/* Separate plane: Height Guide on Left */}
-                  <div className="absolute -left-12 top-0 bottom-0 flex items-center justify-center select-none pointer-events-none">
+                  {/* Separate plane: Height Guide on Left (Dynamically expands outward when box is tiny) */}
+                  <div
+                    className={`absolute top-0 bottom-0 flex items-center justify-center select-none pointer-events-none transition-all duration-200 ${
+                      isTiny ? "-left-16" : "-left-12"
+                    }`}
+                  >
                     <div className="w-px bg-zinc-500/60 h-full absolute"></div>
                     <span className="bg-zinc-900 text-zinc-200 border border-zinc-700 text-[10px] font-mono px-2 py-0.5 rounded z-10 -rotate-90 shadow-sm whitespace-nowrap">
                       h: {Math.round(computedPx)}px
