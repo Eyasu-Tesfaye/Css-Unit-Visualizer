@@ -165,16 +165,16 @@ const Screen = () => {
 
         <button
           onClick={() => setDarkMode(!darkMode)}
-          className={`px-3 py-1.5 rounded-md text-xs font-medium border transition-all flex items-center gap-2 ${
+          className={`px-3 py-1.5 rounded-md text-xs font-medium transition-all flex items-center gap-2 ${
             darkMode
-              ? "bg-zinc-900 border-zinc-700 text-zinc-300 hover:bg-zinc-800"
-              : "bg-white border-zinc-300 text-zinc-700 hover:bg-zinc-100 shadow-sm"
+              ? " text-zinc-300 hover:bg-zinc-800"
+              : " text-zinc-700 hover:bg-zinc-100"
           }`}
           title="Toggle Theme"
         >
           {darkMode ? (
             <svg
-              className="w-3.5 h-3.5 text-zinc-300"
+              className="w-6 h-6 text-zinc-300"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -188,7 +188,7 @@ const Screen = () => {
             </svg>
           ) : (
             <svg
-              className="w-3.5 h-3.5 text-zinc-700"
+              className="w-6 h-6 text-zinc-700"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
