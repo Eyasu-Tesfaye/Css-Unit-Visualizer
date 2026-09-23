@@ -133,6 +133,9 @@ const Screen = () => {
   const needsParent = unit === "em";
   const needsViewport = ["vw", "vh", "vmin", "vmax", "%"].includes(unit);
 
+  const computedPx = conversion.px;
+  const isTooSmall = computedPx < 50;
+
   return (
     <div
       className={`min-h-screen font-sans transition-colors duration-200 ${darkMode ? "bg-zinc-950 text-zinc-100" : "bg-zinc-50 text-zinc-900"}`}
@@ -148,7 +151,7 @@ const Screen = () => {
             <h1 className="text-lg font-semibold tracking-tight uppercase flex items-center gap-2">
               CSS UNIT VISUALIZER
               <span className="text-xs px-2 py-0.5 rounded-full font-mono bg-zinc-800 text-zinc-300 border border-zinc-700">
-                Beginner Mode
+                V1.0
               </span>
             </h1>
             <p
@@ -504,7 +507,7 @@ const Screen = () => {
               } bg-size-[16px_16px]`}
             ></div>
 
-            {/* Viewport size indicator badge matching site theme, visible ONLY for viewport-dependent units */}
+            {/* Viewport size indicator badge */}
             {needsViewport && (
               <div className="absolute top-4 left-4 text-xs font-mono px-2.5 py-1 rounded-md bg-zinc-800 text-zinc-300 border border-zinc-700 shadow-sm select-none z-10">
                 viewport: {settings.viewportWidth} × {settings.viewportHeight}
@@ -513,13 +516,13 @@ const Screen = () => {
 
             {/* Central Element Box (Hidden entirely if value is 0) */}
             <div className="relative flex items-center justify-center">
-              {conversion.px > 0 && (
+              {computedPx > 0 && (
                 <>
                   {/* Separate plane: Width Guide on Top */}
                   <div className="absolute -top-7 left-0 right-0 flex items-center justify-center select-none pointer-events-none">
                     <div className="h-px bg-zinc-500/60 w-full absolute"></div>
                     <span className="bg-zinc-900 text-zinc-200 border border-zinc-700 text-[10px] font-mono px-2 py-0.5 rounded z-10 shadow-sm whitespace-nowrap">
-                      w: {Math.round(conversion.px)}px
+                      w: {Math.round(computedPx)}px
                     </span>
                   </div>
 
@@ -527,26 +530,40 @@ const Screen = () => {
                   <div className="absolute -left-12 top-0 bottom-0 flex items-center justify-center select-none pointer-events-none">
                     <div className="w-px bg-zinc-500/60 h-full absolute"></div>
                     <span className="bg-zinc-900 text-zinc-200 border border-zinc-700 text-[10px] font-mono px-2 py-0.5 rounded z-10 -rotate-90 shadow-sm whitespace-nowrap">
-                      h: {Math.round(conversion.px)}px
+                      h: {Math.round(computedPx)}px
                     </span>
                   </div>
 
                   <div
                     style={{
-                      width: `${Math.max(20, Math.min(conversion.px, 460))}px`,
-                      height: `${Math.max(20, Math.min(conversion.px, 340))}px`,
+                      width: `${Math.max(4, Math.min(computedPx, 460))}px`,
+                      height: `${Math.max(4, Math.min(computedPx, 340))}px`,
                     }}
                     className={`rounded-lg bg-zinc-800/40 border-2 border-zinc-500 flex items-center justify-center shadow-lg transition-all duration-300 ease-out relative group`}
                   >
-                    <div className="text-center p-2">
-                      <div className="font-mono font-bold text-xs md:text-sm text-zinc-200 tracking-tight">
-                        {value || 0}
-                        {unit}
+                    {/* Render inner text if box is large enough (>= 50px) */}
+                    {!isTooSmall && (
+                      <div className="text-center p-2">
+                        <div className="font-mono font-bold text-xs md:text-sm text-zinc-200 tracking-tight">
+                          {value || 0}
+                          {unit}
+                        </div>
+                        <div className="text-[10px] font-mono opacity-60">
+                          ≈ {Math.round(computedPx)}px
+                        </div>
                       </div>
-                      <div className="text-[10px] font-mono opacity-60">
-                        ≈ {Math.round(conversion.px)}px
+                    )}
+
+                    {/* Render external label to the right if box is too small (< 50px) */}
+                    {isTooSmall && (
+                      <div className="absolute left-full ml-3 top-1/2 -translate-y-1/2 flex items-center gap-1.5 select-none pointer-events-none whitespace-nowrap z-10">
+                        <div className="w-2 h-px bg-zinc-500"></div>
+                        <span className="bg-zinc-900 text-zinc-200 border border-zinc-700 text-[10px] font-mono px-2 py-0.5 rounded shadow-sm">
+                          {value || 0}
+                          {unit} (≈ {Math.round(computedPx)}px)
+                        </span>
                       </div>
-                    </div>
+                    )}
 
                     <div className="absolute -top-1 -left-1 w-2 h-2 rounded-full bg-zinc-500"></div>
                     <div className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-zinc-500"></div>
