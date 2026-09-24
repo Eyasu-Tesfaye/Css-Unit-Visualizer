@@ -484,11 +484,6 @@ const Screen = () => {
                 Real-time dimensional preview with measurement guides
               </p>
             </div>
-            <div className="flex items-center gap-2">
-              <span className="text-xs font-mono px-2.5 py-1 rounded-md bg-zinc-800 text-zinc-300 border border-zinc-700">
-                {Math.round(conversion.px)}px computed
-              </span>
-            </div>
           </div>
 
           {/* Stationary Visualizer Window */}
