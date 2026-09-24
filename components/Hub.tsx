@@ -280,7 +280,7 @@ const Screen = () => {
             </div>
 
             <div
-              className={`pt-4 border-t space-y-4 transition-all ${darkMode ? "border-zinc-800" : "border-zinc-100"}`}
+              className={`pt-4 border-t space-y-4 transition-all ${darkMode ? "border-zinc-800" : "border-zinc-200"}`}
             >
               {(needsRoot || needsParent || needsViewport) && (
                 <p className="text-xs font-medium uppercase tracking-wider text-zinc-400">
