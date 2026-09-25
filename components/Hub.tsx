@@ -135,28 +135,28 @@ const Screen = () => {
 
   const computedPx = conversion.px;
   const isTooSmall = computedPx < 50;
-  const isTiny = computedPx < 70; // Triggers expanded guide offset to prevent small overlap
+  const isTiny = computedPx < 70;
 
   return (
     <div
       className={`min-h-screen font-sans transition-colors duration-200 ${darkMode ? "bg-zinc-950 text-zinc-100" : "bg-zinc-50 text-zinc-900"}`}
     >
       <header
-        className={`border-b px-6 py-4 flex items-center justify-between sticky top-0 z-20 backdrop-blur-md ${darkMode ? "border-zinc-800 bg-zinc-950/80" : "border-zinc-200 bg-white/80"}`}
+        className={`border-b px-3 sm:px-6 py-3 flex items-center justify-between sticky top-0 z-20 backdrop-blur-md ${darkMode ? "border-zinc-800 bg-zinc-950/80" : "border-zinc-200 bg-white/80"}`}
       >
-        <div className="flex items-center space-x-3">
-          <div className="w-8 h-8 rounded-lg bg-zinc-800 border border-zinc-700 flex items-center justify-center text-white font-bold text-sm shadow-sm font-mono">
+        <div className="flex items-center space-x-2.5 sm:space-x-3 min-w-0 mr-2">
+          <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-zinc-800 border border-zinc-700 flex items-center justify-center text-white font-bold text-xs sm:text-sm shadow-sm font-mono shrink-0">
             px
           </div>
-          <div>
-            <h1 className="text-lg font-semibold tracking-tight uppercase flex items-center gap-2">
-              CSS UNIT VISUALIZER
-              <span className="text-xs px-2 py-0.5 rounded-full font-mono bg-zinc-800 text-zinc-300 border border-zinc-700">
+          <div className="min-w-0">
+            <h1 className="text-xs sm:text-base md:text-lg font-semibold tracking-tight uppercase flex items-center gap-1.5 sm:gap-2 truncate">
+              <span className="truncate">CSS UNIT VISUALIZER</span>
+              <span className="text-[10px] px-1.5 py-0.2 rounded-full font-mono bg-zinc-800 text-zinc-300 border border-zinc-700 shrink-0">
                 V1.0
               </span>
             </h1>
             <p
-              className={`text-xs ${darkMode ? "text-zinc-400" : "text-zinc-500"}`}
+              className={`text-[10px] sm:text-xs truncate ${darkMode ? "text-zinc-400" : "text-zinc-500"}`}
             >
               Learn how CSS units work in real-time.
             </p>
@@ -165,16 +165,16 @@ const Screen = () => {
 
         <button
           onClick={() => setDarkMode(!darkMode)}
-          className={`px-3 py-1.5 rounded-md text-xs font-medium transition-all flex items-center gap-2 ${
+          className={`p-2 rounded-md text-xs font-medium transition-all flex items-center justify-center shrink-0 ${
             darkMode
-              ? " text-zinc-300 hover:bg-zinc-800"
-              : " text-zinc-700 hover:bg-zinc-100"
+              ? "text-zinc-300 hover:bg-zinc-800"
+              : "text-zinc-700 hover:bg-zinc-100"
           }`}
           title="Toggle Theme"
         >
           {darkMode ? (
             <svg
-              className="w-6 h-6 text-zinc-300"
+              className="w-5 h-5 sm:w-6 sm:h-6 text-zinc-300"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -188,7 +188,7 @@ const Screen = () => {
             </svg>
           ) : (
             <svg
-              className="w-6 h-6 text-zinc-700"
+              className="w-5 h-5 sm:w-6 sm:h-6 text-zinc-700"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -204,15 +204,15 @@ const Screen = () => {
         </button>
       </header>
 
-      <main className="max-w-7xl mx-auto p-4 md:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+      <main className="max-w-7xl mx-auto p-3 sm:p-4 md:p-6 grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 items-start">
         <div
-          className={`lg:col-span-4 rounded-xl border p-5 shadow-sm transition-colors ${darkMode ? "bg-zinc-900/50 border-zinc-800" : "bg-white border-zinc-200"}`}
+          className={`lg:col-span-4 rounded-xl border p-4 sm:p-5 shadow-sm transition-colors ${darkMode ? "bg-zinc-900/50 border-zinc-800" : "bg-white border-zinc-200"}`}
         >
-          <div className="flex items-center justify-between pb-4 mb-4 border-b border-zinc-700/30">
-            <h2 className="text-sm font-semibold tracking-wide uppercase text-zinc-400">
+          <div className="flex items-center justify-between pb-3 sm:pb-4 mb-3 sm:mb-4 border-b border-zinc-700/30">
+            <h2 className="text-xs sm:text-sm font-semibold tracking-wide uppercase text-zinc-400">
               Control Panel
             </h2>
-            <span className="text-xs font-mono opacity-70">
+            <span className="text-[10px] sm:text-xs font-mono opacity-70">
               Interactive Inputs
             </span>
           </div>
@@ -462,7 +462,7 @@ const Screen = () => {
                 {Math.round(conversion.px * 10) / 10}px
               </div>
               <div
-                className={`mt-2 text-xs font-mono p-2 rounded border ${darkMode ? "bg-zinc-900 border-zinc-800 text-zinc-300" : "bg-white border-zinc-200 text-zinc-600"}`}
+                className={`mt-2 text-xs font-mono p-2 rounded border overflow-x-auto ${darkMode ? "bg-zinc-900 border-zinc-800 text-zinc-300" : "bg-white border-zinc-200 text-zinc-600"}`}
               >
                 {conversion.formula}
               </div>
@@ -471,24 +471,24 @@ const Screen = () => {
         </div>
 
         <div
-          className={`lg:col-span-8 rounded-xl border p-5 md:p-8 flex flex-col justify-between shadow-sm transition-colors ${darkMode ? "bg-zinc-900/50 border-zinc-800" : "bg-white border-zinc-200"}`}
+          className={`lg:col-span-8 rounded-xl border p-4 sm:p-5 md:p-8 flex flex-col justify-between shadow-sm transition-colors ${darkMode ? "bg-zinc-900/50 border-zinc-800" : "bg-white border-zinc-200"}`}
         >
-          <div className="flex items-center justify-between pb-4 mb-6 border-b border-zinc-700/30">
+          <div className="flex items-center justify-between pb-3 sm:pb-4 mb-4 sm:mb-6 border-b border-zinc-700/30">
             <div>
-              <h2 className="text-sm font-semibold tracking-wide uppercase text-zinc-400">
+              <h2 className="text-xs sm:text-sm font-semibold tracking-wide uppercase text-zinc-400">
                 Visualizer
               </h2>
               <p
-                className={`text-xs ${darkMode ? "text-zinc-400" : "text-zinc-500"}`}
+                className={`text-[11px] sm:text-xs ${darkMode ? "text-zinc-400" : "text-zinc-500"}`}
               >
                 Real-time dimensional preview with measurement guides
               </p>
             </div>
           </div>
 
-          {/* Stationary Visualizer Window */}
+          {/* Stationary Visualizer Window with Centered Layout */}
           <div
-            className={`relative w-full h-120 rounded-xl border flex items-center justify-center overflow-hidden p-8 transition-all ${
+            className={`relative w-full h-80 sm:h-100 md:h-120 rounded-xl border flex items-center justify-center overflow-visible transition-all ${
               darkMode
                 ? "bg-zinc-950 border-zinc-800"
                 : "bg-zinc-100/70 border-zinc-200"
@@ -496,7 +496,7 @@ const Screen = () => {
           >
             {/* Background Dot Grid */}
             <div
-              className={`absolute inset-0 opacity-40 ${
+              className={`absolute inset-0 opacity-40 rounded-xl overflow-hidden ${
                 darkMode
                   ? "bg-[radial-gradient(#52525b_1px,transparent_1px)]"
                   : "bg-[radial-gradient(#94a3b8_1px,transparent_1px)]"
@@ -505,7 +505,7 @@ const Screen = () => {
 
             {/* Viewport size indicator badge */}
             {needsViewport && (
-              <div className="absolute top-4 left-4 text-xs font-mono px-2.5 py-1 rounded-md bg-zinc-800 text-zinc-300 border border-zinc-700 shadow-sm select-none z-10">
+              <div className="absolute top-3 left-3 sm:top-4 sm:left-4 text-[10px] sm:text-xs font-mono px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-md bg-zinc-800 text-zinc-300 border border-zinc-700 shadow-sm select-none z-10">
                 viewport: {settings.viewportWidth} × {settings.viewportHeight}
               </div>
             )}
@@ -514,7 +514,7 @@ const Screen = () => {
             <div className="relative flex items-center justify-center">
               {computedPx > 0 && (
                 <>
-                  {/* Separate plane: Width Guide on Top (Dynamically expands outward when box is tiny) */}
+                  {/* Separate plane: Width Guide on Top */}
                   <div
                     className={`absolute left-0 right-0 flex items-center justify-center select-none pointer-events-none transition-all duration-200 ${
                       isTiny ? "-top-12" : "-top-7"
@@ -526,7 +526,7 @@ const Screen = () => {
                     </span>
                   </div>
 
-                  {/* Separate plane: Height Guide on Left (Dynamically expands outward when box is tiny) */}
+                  {/* Separate plane: Height Guide on Left */}
                   <div
                     className={`absolute top-0 bottom-0 flex items-center justify-center select-none pointer-events-none transition-all duration-200 ${
                       isTiny ? "-left-16" : "-left-12"
@@ -540,8 +540,8 @@ const Screen = () => {
 
                   <div
                     style={{
-                      width: `${Math.max(4, Math.min(computedPx, 460))}px`,
-                      height: `${Math.max(4, Math.min(computedPx, 340))}px`,
+                      width: `${Math.max(4, Math.min(computedPx, 240))}px`,
+                      height: `${Math.max(4, Math.min(computedPx, 180))}px`,
                     }}
                     className={`rounded-lg bg-zinc-800/40 border-2 border-zinc-500 flex items-center justify-center shadow-lg transition-all duration-300 ease-out relative group`}
                   >
