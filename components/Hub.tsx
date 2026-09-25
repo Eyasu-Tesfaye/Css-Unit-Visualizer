@@ -151,8 +151,8 @@ const Screen = () => {
             px
           </div>
           <div className="min-w-0">
-            <h1 className="text-xs sm:text-base md:text-lg font-semibold tracking-tight uppercase flex items-center gap-1.5 sm:gap-2 truncate">
-              <span className="truncate">CSS UNIT VISUALIZER</span>
+            <h1 className="text-xs sm:text-base md:text-lg font-semibold tracking-tight flex items-center gap-1.5 sm:gap-2 truncate">
+              <span className="truncate">CSScope</span>
               <span className="text-[10px] px-1.5 py-0.2 rounded-full font-mono bg-zinc-800 text-zinc-300 border border-zinc-700 shrink-0">
                 V1.0
               </span>
