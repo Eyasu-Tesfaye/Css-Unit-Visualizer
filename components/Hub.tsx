@@ -103,6 +103,7 @@ function getUnitDescription(unit: string) {
 
 const Screen = () => {
   const [darkMode, setDarkMode] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
   const [value, setValue] = useState("2");
   const [unit, setUnit] = useState("rem");
@@ -139,13 +140,14 @@ const Screen = () => {
 
   return (
     <div
-      className={`min-h-screen font-sans transition-colors duration-200 ${darkMode ? "bg-zinc-950 text-zinc-100" : "bg-zinc-50 text-zinc-900"}`}
+      className={`h-screen w-screen flex flex-col font-sans transition-colors duration-200 overflow-hidden ${darkMode ? "bg-zinc-950 text-zinc-100" : "bg-zinc-50 text-zinc-900"}`}
     >
+      {/* Navbar (Untouched) */}
       <header
-        className={`border-b px-3 sm:px-6 py-3 flex items-center justify-between sticky top-0 z-20 backdrop-blur-md ${darkMode ? "border-zinc-800 bg-zinc-950/80" : "border-zinc-200 bg-white/80"}`}
+        className={`border-b px-3 sm:px-6 py-3 flex items-center justify-between sticky top-0 z-40 backdrop-blur-md shrink-0 ${darkMode ? "border-zinc-800 bg-zinc-950/80" : "border-zinc-200 bg-white/80"}`}
       >
         <div className="flex items-center space-x-2.5 sm:space-x-3 min-w-0 mr-2">
-          <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-zinc-800 border border-zinc-700 flex items-center justify-center text-white font-bold text-xs sm:text-sm shadow-sm font-mono shrink-0">
+          <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-zinc-800 border border-zinc-700 flex items-center justify-center text-white font-bold text-sm shadow-sm font-mono shrink-0">
             px
           </div>
           <div className="min-w-0">
@@ -204,107 +206,43 @@ const Screen = () => {
         </button>
       </header>
 
-      <main className="max-w-7xl mx-auto p-3 sm:p-4 md:p-6 grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 items-start">
-        <div
-          className={`lg:col-span-4 rounded-xl border p-4 sm:p-5 shadow-sm transition-colors ${darkMode ? "bg-zinc-900/50 border-zinc-800" : "bg-white border-zinc-200"}`}
+      {/* Full-Screen Workspace Body */}
+      <div className="flex-1 flex relative overflow-hidden">
+        {/* Collapsible Sidebar Drawer */}
+        <aside
+          className={`absolute lg:relative z-30 inset-y-0 left-0 w-80 sm:w-96 border-r flex flex-col transition-all duration-300 ease-in-out shadow-2xl lg:shadow-none shrink-0 ${
+            isSidebarOpen
+              ? "translate-x-0"
+              : "-translate-x-full lg:w-0 lg:border-r-0 lg:overflow-hidden"
+          } ${darkMode ? "bg-zinc-950/95 border-zinc-800 backdrop-blur-md" : "bg-white/95 border-zinc-200 backdrop-blur-md"}`}
         >
-          <div className="flex items-center justify-between pb-3 sm:pb-4 mb-3 sm:mb-4 border-b border-zinc-700/30">
+          <div className="p-4 sm:p-5 pb-3 flex items-center justify-between border-b border-zinc-700/30">
             <h2 className="text-xs sm:text-sm font-semibold tracking-wide uppercase text-zinc-400">
               Control Panel
             </h2>
-            <span className="text-[10px] sm:text-xs font-mono opacity-70">
-              Interactive Inputs
-            </span>
+            <button
+              onClick={() => setIsSidebarOpen(false)}
+              className="lg:hidden text-zinc-400 hover:text-zinc-100 p-1 rounded"
+            >
+              ✕
+            </button>
           </div>
 
-          <div className="space-y-4">
-            <div className="grid grid-cols-3 gap-3">
-              <div className="col-span-2">
-                <label className="block text-xs font-medium mb-1.5 opacity-80">
-                  Value
-                </label>
-                <input
-                  type="number"
-                  min="0"
-                  step="any"
-                  value={value}
-                  onChange={(e) => {
-                    const v = e.target.value;
-                    setValue(
-                      v === ""
-                        ? ""
-                        : Math.max(0, parseFloat(v) || 0).toString(),
-                    );
-                  }}
-                  className={`w-full px-3 py-2 rounded-lg border font-mono text-sm focus:outline-none focus:ring-2 focus:ring-zinc-500 ${
-                    darkMode
-                      ? "bg-zinc-950 border-zinc-700 text-zinc-100"
-                      : "bg-zinc-50 border-zinc-300 text-zinc-900"
-                  }`}
-                  placeholder="e.g. 2"
-                />
-              </div>
-              <div>
-                <label className="block text-xs font-medium mb-1.5 opacity-80">
-                  Unit
-                </label>
-                <select
-                  value={unit}
-                  onChange={(e) => setUnit(e.target.value)}
-                  className={`w-full px-3 py-2 rounded-lg border font-mono text-sm focus:outline-none focus:ring-2 focus:ring-zinc-500 ${
-                    darkMode
-                      ? "bg-zinc-950 border-zinc-700 text-zinc-100"
-                      : "bg-zinc-50 border-zinc-300 text-zinc-900"
-                  }`}
-                >
-                  <option value="px">px</option>
-                  <option value="rem">rem</option>
-                  <option value="em">em</option>
-                  <option value="%">%</option>
-                  <option value="vw">vw</option>
-                  <option value="vh">vh</option>
-                  <option value="vmin">vmin</option>
-                  <option value="vmax">vmax</option>
-                </select>
-              </div>
-            </div>
-
-            {/* Beginner Concept Explainer Card */}
-            <div
-              className={`p-3 rounded-lg border text-xs leading-relaxed ${darkMode ? "bg-blue-950/30 border-blue-800/50 text-blue-200" : "bg-blue-50 border-blue-200 text-blue-900"}`}
-            >
-              <div className="font-semibold mb-1 flex items-center gap-1.5 uppercase tracking-wider text-[10px]">
-                <span>💡 Concept Guide: {unit}</span>
-              </div>
-              {getUnitDescription(unit)}
-            </div>
-
-            <div
-              className={`pt-4 border-t space-y-4 transition-all ${darkMode ? "border-zinc-800" : "border-zinc-200"}`}
-            >
-              {(needsRoot || needsParent || needsViewport) && (
-                <p className="text-xs font-medium uppercase tracking-wider text-zinc-400">
-                  Context Settings
-                </p>
-              )}
-
-              {needsRoot && (
-                <div>
-                  <div className="flex justify-between items-center mb-1.5">
-                    <label className="text-xs font-medium opacity-80">
-                      Root Font Size (&lt;html&gt;)
-                    </label>
-                    <span className="text-xs font-mono text-zinc-400">
-                      {rootFontSize}px
-                    </span>
-                  </div>
+          <div className="p-4 sm:p-5 flex-1 overflow-y-auto space-y-4">
+            <div className="space-y-4">
+              <div className="grid grid-cols-3 gap-3">
+                <div className="col-span-2">
+                  <label className="block text-xs font-medium mb-1.5 opacity-80">
+                    Value
+                  </label>
                   <input
                     type="number"
                     min="0"
-                    value={rootFontSize}
+                    step="any"
+                    value={value}
                     onChange={(e) => {
                       const v = e.target.value;
-                      setRootFontSize(
+                      setValue(
                         v === ""
                           ? ""
                           : Math.max(0, parseFloat(v) || 0).toString(),
@@ -312,200 +250,287 @@ const Screen = () => {
                     }}
                     className={`w-full px-3 py-2 rounded-lg border font-mono text-sm focus:outline-none focus:ring-2 focus:ring-zinc-500 ${
                       darkMode
-                        ? "bg-zinc-950 border-zinc-700 text-zinc-100"
+                        ? "bg-zinc-900 border-zinc-700 text-zinc-100"
                         : "bg-zinc-50 border-zinc-300 text-zinc-900"
                     }`}
+                    placeholder="e.g. 2"
                   />
                 </div>
-              )}
-
-              {needsParent && (
                 <div>
-                  <div className="flex justify-between items-center mb-1.5">
-                    <label className="text-xs font-medium opacity-80">
-                      Parent Font Size
-                    </label>
-                    <span className="text-xs font-mono text-zinc-400">
-                      {parentFontSize}px
-                    </span>
-                  </div>
-                  <input
-                    type="number"
-                    min="0"
-                    value={parentFontSize}
-                    onChange={(e) => {
-                      const v = e.target.value;
-                      setParentFontSize(
-                        v === ""
-                          ? ""
-                          : Math.max(0, parseFloat(v) || 0).toString(),
-                      );
-                    }}
+                  <label className="block text-xs font-medium mb-1.5 opacity-80">
+                    Unit
+                  </label>
+                  <select
+                    value={unit}
+                    onChange={(e) => setUnit(e.target.value)}
                     className={`w-full px-3 py-2 rounded-lg border font-mono text-sm focus:outline-none focus:ring-2 focus:ring-zinc-500 ${
                       darkMode
-                        ? "bg-zinc-950 border-zinc-700 text-zinc-100"
+                        ? "bg-zinc-900 border-zinc-700 text-zinc-100"
                         : "bg-zinc-50 border-zinc-300 text-zinc-900"
                     }`}
-                  />
+                  >
+                    <option value="px">px</option>
+                    <option value="rem">rem</option>
+                    <option value="em">em</option>
+                    <option value="%">%</option>
+                    <option value="vw">vw</option>
+                    <option value="vh">vh</option>
+                    <option value="vmin">vmin</option>
+                    <option value="vmax">vmax</option>
+                  </select>
                 </div>
-              )}
-
-              {needsViewport && (
-                <>
-                  <div className="grid grid-cols-2 gap-3">
-                    <div>
-                      <div className="flex justify-between items-center mb-1.5">
-                        <label className="text-xs font-medium opacity-80">
-                          Viewport Width
-                        </label>
-                      </div>
-                      <input
-                        type="number"
-                        min="0"
-                        value={viewportWidth}
-                        onChange={(e) => {
-                          const v = e.target.value;
-                          setViewportWidth(
-                            v === ""
-                              ? ""
-                              : Math.max(0, parseFloat(v) || 0).toString(),
-                          );
-                        }}
-                        className={`w-full px-3 py-2 rounded-lg border font-mono text-sm focus:outline-none focus:ring-2 focus:ring-zinc-500 ${
-                          darkMode
-                            ? "bg-zinc-950 border-zinc-700 text-zinc-100"
-                            : "bg-zinc-50 border-zinc-300 text-zinc-900"
-                        }`}
-                      />
-                    </div>
-                    <div>
-                      <div className="flex justify-between items-center mb-1.5">
-                        <label className="text-xs font-medium opacity-80">
-                          Viewport Height
-                        </label>
-                      </div>
-                      <input
-                        type="number"
-                        min="0"
-                        value={viewportHeight}
-                        onChange={(e) => {
-                          const v = e.target.value;
-                          setViewportHeight(
-                            v === ""
-                              ? ""
-                              : Math.max(0, parseFloat(v) || 0).toString(),
-                          );
-                        }}
-                        className={`w-full px-3 py-2 rounded-lg border font-mono text-sm focus:outline-none focus:ring-2 focus:ring-zinc-500 ${
-                          darkMode
-                            ? "bg-zinc-950 border-zinc-700 text-zinc-100"
-                            : "bg-zinc-50 border-zinc-300 text-zinc-900"
-                        }`}
-                      />
-                    </div>
-                  </div>
-
-                  <div className="pt-2">
-                    <div className="flex justify-between items-center mb-1.5">
-                      <span className="text-xs font-medium opacity-80">
-                        Viewport Width Slider
-                      </span>
-                      <span className="text-xs font-mono text-zinc-400">
-                        {viewportWidth}px
-                      </span>
-                    </div>
-                    <input
-                      type="range"
-                      min="100"
-                      max="2560"
-                      step="10"
-                      value={viewportWidth}
-                      onChange={(e) => setViewportWidth(e.target.value)}
-                      className="w-full accent-zinc-500 cursor-pointer"
-                      aria-label="Viewport Width Slider"
-                    />
-                  </div>
-
-                  <div className="pt-2">
-                    <div className="flex justify-between items-center mb-1.5">
-                      <span className="text-xs font-medium opacity-80">
-                        Viewport Height Slider
-                      </span>
-                      <span className="text-xs font-mono text-zinc-400">
-                        {viewportHeight}px
-                      </span>
-                    </div>
-                    <input
-                      type="range"
-                      min="100"
-                      max="2160"
-                      step="10"
-                      value={viewportHeight}
-                      onChange={(e) => setViewportHeight(e.target.value)}
-                      className="w-full accent-zinc-500 cursor-pointer"
-                      aria-label="Viewport Height Slider"
-                    />
-                  </div>
-                </>
-              )}
-            </div>
-
-            <div
-              className={`mt-6 p-4 rounded-xl border ${darkMode ? "bg-zinc-950/70 border-zinc-800" : "bg-zinc-100/70 border-zinc-200"}`}
-            >
-              <div className="text-xs uppercase tracking-wider text-zinc-400 font-semibold mb-1">
-                Conversion Result
               </div>
-              <div className="text-2xl font-mono font-bold tracking-tight">
-                {value || 0}
-                {unit} <span className="text-zinc-500 font-normal">=</span>{" "}
-                {Math.round(conversion.px * 10) / 10}px
-              </div>
+
+              {/* Beginner Concept Explainer Card */}
               <div
-                className={`mt-2 text-xs font-mono p-2 rounded border overflow-x-auto ${darkMode ? "bg-zinc-900 border-zinc-800 text-zinc-300" : "bg-white border-zinc-200 text-zinc-600"}`}
+                className={`p-3 rounded-lg border text-xs leading-relaxed ${darkMode ? "bg-blue-950/30 border-blue-800/50 text-blue-200" : "bg-blue-50 border-blue-200 text-blue-900"}`}
               >
-                {conversion.formula}
+                <div className="font-semibold mb-1 flex items-center gap-1.5 uppercase tracking-wider text-[10px]">
+                  <span>💡 Concept Guide: {unit}</span>
+                </div>
+                {getUnitDescription(unit)}
+              </div>
+
+              <div
+                className={`pt-4 border-t space-y-4 transition-all ${darkMode ? "border-zinc-800" : "border-zinc-200"}`}
+              >
+                {(needsRoot || needsParent || needsViewport) && (
+                  <p className="text-xs font-medium uppercase tracking-wider text-zinc-400">
+                    Context Settings
+                  </p>
+                )}
+
+                {needsRoot && (
+                  <div>
+                    <div className="flex justify-between items-center mb-1.5">
+                      <label className="text-xs font-medium opacity-80">
+                        Root Font Size (&lt;html&gt;)
+                      </label>
+                      <span className="text-xs font-mono text-zinc-400">
+                        {rootFontSize}px
+                      </span>
+                    </div>
+                    <input
+                      type="number"
+                      min="0"
+                      value={rootFontSize}
+                      onChange={(e) => {
+                        const v = e.target.value;
+                        setRootFontSize(
+                          v === ""
+                            ? ""
+                            : Math.max(0, parseFloat(v) || 0).toString(),
+                        );
+                      }}
+                      className={`w-full px-3 py-2 rounded-lg border font-mono text-sm focus:outline-none focus:ring-2 focus:ring-zinc-500 ${
+                        darkMode
+                          ? "bg-zinc-900 border-zinc-700 text-zinc-100"
+                          : "bg-zinc-50 border-zinc-300 text-zinc-900"
+                      }`}
+                    />
+                  </div>
+                )}
+
+                {needsParent && (
+                  <div>
+                    <div className="flex justify-between items-center mb-1.5">
+                      <label className="text-xs font-medium opacity-80">
+                        Parent Font Size
+                      </label>
+                      <span className="text-xs font-mono text-zinc-400">
+                        {parentFontSize}px
+                      </span>
+                    </div>
+                    <input
+                      type="number"
+                      min="0"
+                      value={parentFontSize}
+                      onChange={(e) => {
+                        const v = e.target.value;
+                        setParentFontSize(
+                          v === ""
+                            ? ""
+                            : Math.max(0, parseFloat(v) || 0).toString(),
+                        );
+                      }}
+                      className={`w-full px-3 py-2 rounded-lg border font-mono text-sm focus:outline-none focus:ring-2 focus:ring-zinc-500 ${
+                        darkMode
+                          ? "bg-zinc-900 border-zinc-700 text-zinc-100"
+                          : "bg-zinc-50 border-zinc-300 text-zinc-900"
+                      }`}
+                    />
+                  </div>
+                )}
+
+                {needsViewport && (
+                  <>
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <div className="flex justify-between items-center mb-1.5">
+                          <label className="text-xs font-medium opacity-80">
+                            Viewport Width
+                          </label>
+                        </div>
+                        <input
+                          type="number"
+                          min="0"
+                          value={viewportWidth}
+                          onChange={(e) => {
+                            const v = e.target.value;
+                            setViewportWidth(
+                              v === ""
+                                ? ""
+                                : Math.max(0, parseFloat(v) || 0).toString(),
+                            );
+                          }}
+                          className={`w-full px-3 py-2 rounded-lg border font-mono text-sm focus:outline-none focus:ring-2 focus:ring-zinc-500 ${
+                            darkMode
+                              ? "bg-zinc-900 border-zinc-700 text-zinc-100"
+                              : "bg-zinc-50 border-zinc-300 text-zinc-900"
+                          }`}
+                        />
+                      </div>
+                      <div>
+                        <div className="flex justify-between items-center mb-1.5">
+                          <label className="text-xs font-medium opacity-80">
+                            Viewport Height
+                          </label>
+                        </div>
+                        <input
+                          type="number"
+                          min="0"
+                          value={viewportHeight}
+                          onChange={(e) => {
+                            const v = e.target.value;
+                            setViewportHeight(
+                              v === ""
+                                ? ""
+                                : Math.max(0, parseFloat(v) || 0).toString(),
+                            );
+                          }}
+                          className={`w-full px-3 py-2 rounded-lg border font-mono text-sm focus:outline-none focus:ring-2 focus:ring-zinc-500 ${
+                            darkMode
+                              ? "bg-zinc-900 border-zinc-700 text-zinc-100"
+                              : "bg-zinc-50 border-zinc-300 text-zinc-900"
+                          }`}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="pt-2">
+                      <div className="flex justify-between items-center mb-1.5">
+                        <span className="text-xs font-medium opacity-80">
+                          Viewport Width Slider
+                        </span>
+                        <span className="text-xs font-mono text-zinc-400">
+                          {viewportWidth}px
+                        </span>
+                      </div>
+                      <input
+                        type="range"
+                        min="100"
+                        max="2560"
+                        step="10"
+                        value={viewportWidth}
+                        onChange={(e) => setViewportWidth(e.target.value)}
+                        className="w-full accent-zinc-500 cursor-pointer"
+                        aria-label="Viewport Width Slider"
+                      />
+                    </div>
+
+                    <div className="pt-2">
+                      <div className="flex justify-between items-center mb-1.5">
+                        <span className="text-xs font-medium opacity-80">
+                          Viewport Height Slider
+                        </span>
+                        <span className="text-xs font-mono text-zinc-400">
+                          {viewportHeight}px
+                        </span>
+                      </div>
+                      <input
+                        type="range"
+                        min="100"
+                        max="2160"
+                        step="10"
+                        value={viewportHeight}
+                        onChange={(e) => setViewportHeight(e.target.value)}
+                        className="w-full accent-zinc-500 cursor-pointer"
+                        aria-label="Viewport Height Slider"
+                      />
+                    </div>
+                  </>
+                )}
+              </div>
+
+              <div
+                className={`mt-6 p-4 rounded-xl border ${darkMode ? "bg-zinc-900/40 border-zinc-800" : "bg-zinc-100 border-zinc-200"}`}
+              >
+                <div className="text-xs uppercase tracking-wider text-zinc-400 font-semibold mb-1">
+                  Conversion Result
+                </div>
+                <div className="text-2xl font-mono font-bold tracking-tight">
+                  {value || 0}
+                  {unit} <span className="text-zinc-500 font-normal">=</span>{" "}
+                  {Math.round(conversion.px * 10) / 10}px
+                </div>
+                <div
+                  className={`mt-2 text-xs font-mono p-2 rounded border overflow-x-auto ${darkMode ? "bg-zinc-950 border-zinc-800 text-zinc-300" : "bg-white border-zinc-200 text-zinc-600"}`}
+                >
+                  {conversion.formula}
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        </aside>
 
-        <div
-          className={`lg:col-span-8 rounded-xl border p-4 sm:p-5 md:p-8 flex flex-col justify-between shadow-sm transition-colors ${darkMode ? "bg-zinc-900/50 border-zinc-800" : "bg-white border-zinc-200"}`}
+        {/* Sidebar Toggle Button (Docked right on the outer edge of the sidebar/screen) */}
+        <button
+          onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+          className={`absolute top-4 z-40 p-2 rounded-r-lg border-y border-r shadow-xl transition-all duration-300 flex items-center justify-center ${
+            isSidebarOpen ? "left-80 sm:left-96" : "left-0"
+          } ${
+            darkMode
+              ? "bg-zinc-900 border-zinc-700 text-zinc-200 hover:bg-zinc-800"
+              : "bg-white border-zinc-300 text-zinc-800 hover:bg-zinc-100"
+          }`}
+          title={
+            isSidebarOpen ? "Collapse Control Panel" : "Expand Control Panel"
+          }
         >
-          <div className="flex items-center justify-between pb-3 sm:pb-4 mb-4 sm:mb-6 border-b border-zinc-700/30">
-            <div>
-              <h2 className="text-xs sm:text-sm font-semibold tracking-wide uppercase text-zinc-400">
-                Visualizer
-              </h2>
-              <p
-                className={`text-[11px] sm:text-xs ${darkMode ? "text-zinc-400" : "text-zinc-500"}`}
-              >
-                Real-time dimensional preview with measurement guides
-              </p>
-            </div>
-          </div>
+          <svg
+            className={`w-4 h-4 transition-transform duration-300 ${isSidebarOpen ? "" : "rotate-180"}`}
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M9 5l7 7-7 7"
+            />
+          </svg>
+        </button>
 
-          {/* Stationary Visualizer Window with Centered Layout */}
+        {/* Full-Screen Immersive Canvas Stage */}
+        <main className="flex-1 flex flex-col relative overflow-visible items-center justify-center w-full h-full">
           <div
-            className={`relative w-full h-80 sm:h-100 md:h-120 rounded-xl border flex items-center justify-center overflow-visible transition-all ${
-              darkMode
-                ? "bg-zinc-950 border-zinc-800"
-                : "bg-zinc-100/70 border-zinc-200"
+            className={`relative w-full h-full flex items-center justify-center overflow-visible transition-all ${
+              darkMode ? "bg-zinc-950" : "bg-white"
             }`}
           >
             {/* Background Dot Grid */}
             <div
-              className={`absolute inset-0 opacity-40 rounded-xl overflow-hidden ${
+              className={`absolute inset-0 opacity-40 overflow-hidden ${
                 darkMode
                   ? "bg-[radial-gradient(#52525b_1px,transparent_1px)]"
                   : "bg-[radial-gradient(#94a3b8_1px,transparent_1px)]"
               } bg-size-[16px_16px]`}
             ></div>
 
-            {/* Viewport size indicator badge */}
+            {/* Viewport size indicator badge (Moved to top-right corner) */}
             {needsViewport && (
-              <div className="absolute top-3 left-3 sm:top-4 sm:left-4 text-[10px] sm:text-xs font-mono px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-md bg-zinc-800 text-zinc-300 border border-zinc-700 shadow-sm select-none z-10">
+              <div className="absolute top-4 right-4 text-xs font-mono px-2.5 py-1 rounded-md bg-zinc-800 text-zinc-300 border border-zinc-700 shadow-sm select-none z-20">
                 viewport: {settings.viewportWidth} × {settings.viewportHeight}
               </div>
             )}
@@ -540,19 +565,19 @@ const Screen = () => {
 
                   <div
                     style={{
-                      width: `${Math.max(4, Math.min(computedPx, 240))}px`,
-                      height: `${Math.max(4, Math.min(computedPx, 180))}px`,
+                      width: `${Math.max(4, Math.min(computedPx, 520))}px`,
+                      height: `${Math.max(4, Math.min(computedPx, 380))}px`,
                     }}
-                    className={`rounded-lg bg-zinc-800/40 border-2 border-zinc-500 flex items-center justify-center shadow-lg transition-all duration-300 ease-out relative group`}
+                    className={`rounded-xl bg-zinc-800/40 border-2 border-zinc-500 flex items-center justify-center shadow-2xl transition-all duration-300 ease-out relative group`}
                   >
                     {/* Render inner text if box is large enough (>= 50px) */}
                     {!isTooSmall && (
                       <div className="text-center p-2">
-                        <div className="font-mono font-bold text-xs md:text-sm text-zinc-200 tracking-tight">
+                        <div className="font-mono font-bold text-sm sm:text-base text-zinc-200 tracking-tight">
                           {value || 0}
                           {unit}
                         </div>
-                        <div className="text-[10px] font-mono opacity-60">
+                        <div className="text-[11px] font-mono opacity-60">
                           ≈ {Math.round(computedPx)}px
                         </div>
                       </div>
@@ -569,17 +594,17 @@ const Screen = () => {
                       </div>
                     )}
 
-                    <div className="absolute -top-1 -left-1 w-2 h-2 rounded-full bg-zinc-500"></div>
-                    <div className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-zinc-500"></div>
-                    <div className="absolute -bottom-1 -left-1 w-2 h-2 rounded-full bg-zinc-500"></div>
-                    <div className="absolute -bottom-1 -right-1 w-2 h-2 rounded-full bg-zinc-500"></div>
+                    <div className="absolute -top-1 -left-1 w-2.5 h-2.5 rounded-full bg-zinc-400"></div>
+                    <div className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-zinc-400"></div>
+                    <div className="absolute -bottom-1 -left-1 w-2.5 h-2.5 rounded-full bg-zinc-400"></div>
+                    <div className="absolute -bottom-1 -right-1 w-2.5 h-2.5 rounded-full bg-zinc-400"></div>
                   </div>
                 </>
               )}
             </div>
           </div>
-        </div>
-      </main>
+        </main>
+      </div>
     </div>
   );
 };
