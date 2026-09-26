@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useRef, useEffect } from "react";
 
 interface ControlPanelProps {
   darkMode: boolean;
@@ -43,6 +43,116 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({
   needsParent,
   needsViewport,
 }) => {
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  const stopStepping = () => {
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    if (intervalRef.current) clearInterval(intervalRef.current);
+    timeoutRef.current = null;
+    intervalRef.current = null;
+  };
+
+  const startStepping = (
+    currentVal: string,
+    setter: (val: string) => void,
+    amount: number,
+  ) => {
+    stopStepping();
+
+    // Immediate initial step
+    const current = parseFloat(currentVal) || 0;
+    const initialUpdated = Math.max(0, current + amount).toString();
+    setter(initialUpdated);
+
+    // Keep track of the running value during hold
+    let latestValue = parseFloat(initialUpdated) || 0;
+
+    // Delay before rapid continuous spinning starts on hold
+    timeoutRef.current = setTimeout(() => {
+      intervalRef.current = setInterval(() => {
+        latestValue = Math.max(0, latestValue + amount);
+        setter(latestValue.toString());
+      }, 70); // Speed of continuous spin
+    }, 300);
+  };
+
+  useEffect(() => {
+    return () => stopStepping();
+  }, []);
+
+  const renderNumberInput = (
+    val: string,
+    setter: (v: string) => void,
+    stepAmount = 1,
+  ) => (
+    <div className="relative flex items-center">
+      <input
+        type="number"
+        min="0"
+        step="any"
+        value={val}
+        onChange={(e) => {
+          const v = e.target.value;
+          setter(v === "" ? "" : Math.max(0, parseFloat(v) || 0).toString());
+        }}
+        className={`w-full px-3 py-2 rounded-lg border font-mono text-sm focus:outline-none focus:ring-2 focus:ring-zinc-500 lg:pr-3 pr-14 lg:[&::-webkit-inner-spin-button]:opacity-100 lg:[&::-webkit-outer-spin-button]:opacity-100 [&::-webkit-search-cancel-button]:hidden [&::-webkit-clear-button]:hidden ${
+          darkMode
+            ? "bg-zinc-900 border-zinc-700 text-zinc-100 scheme-dark"
+            : "bg-zinc-50 border-zinc-300 text-zinc-900 scheme-light"
+        }`}
+        placeholder="e.g. 2"
+      />
+      {/* Stepper buttons visible on mobile and tablet only (hidden on lg desktop screens) */}
+      <div className="absolute right-1 flex lg:hidden items-center space-x-0.5 select-none">
+        <button
+          type="button"
+          onMouseDown={(e) => {
+            e.preventDefault();
+            startStepping(val, setter, -stepAmount);
+          }}
+          onMouseUp={stopStepping}
+          onMouseLeave={stopStepping}
+          onTouchStart={(e) => {
+            e.preventDefault();
+            startStepping(val, setter, -stepAmount);
+          }}
+          onTouchEnd={stopStepping}
+          className={`w-6 h-7 flex items-center justify-center rounded text-xs font-mono transition-colors cursor-pointer ${
+            darkMode
+              ? "bg-zinc-800 text-zinc-300 active:bg-zinc-700"
+              : "bg-zinc-200 text-zinc-700 active:bg-zinc-300"
+          }`}
+          title="Decrease"
+        >
+          -
+        </button>
+        <button
+          type="button"
+          onMouseDown={(e) => {
+            e.preventDefault();
+            startStepping(val, setter, stepAmount);
+          }}
+          onMouseUp={stopStepping}
+          onMouseLeave={stopStepping}
+          onTouchStart={(e) => {
+            e.preventDefault();
+            startStepping(val, setter, stepAmount);
+          }}
+          onTouchEnd={stopStepping}
+          className={`w-6 h-7 flex items-center justify-center rounded text-xs font-mono transition-colors cursor-pointer ${
+            darkMode
+              ? "bg-zinc-800 text-zinc-300 active:bg-zinc-700"
+              : "bg-zinc-200 text-zinc-700 active:bg-zinc-300"
+          }`}
+          title="Increase"
+        >
+          +
+        </button>
+      </div>
+    </div>
+  );
+
   return (
     <div className="space-y-4">
       <div className="grid grid-cols-3 gap-3">
@@ -50,24 +160,7 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({
           <label className="block text-xs font-medium mb-1.5 opacity-80">
             Value
           </label>
-          <input
-            type="number"
-            min="0"
-            step="any"
-            value={value}
-            onChange={(e) => {
-              const v = e.target.value;
-              setValue(
-                v === "" ? "" : Math.max(0, parseFloat(v) || 0).toString(),
-              );
-            }}
-            className={`w-full px-3 py-2 rounded-lg border font-mono text-sm focus:outline-none focus:ring-2 focus:ring-zinc-500 ${
-              darkMode
-                ? "bg-zinc-900 border-zinc-700 text-zinc-100 scheme-dark"
-                : "bg-zinc-50 border-zinc-300 text-zinc-900 scheme-light"
-            }`}
-            placeholder="e.g. 2"
-          />
+          {renderNumberInput(value, setValue)}
         </div>
         <div>
           <label className="block text-xs font-medium mb-1.5 opacity-80">
@@ -129,22 +222,7 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({
                 {rootFontSize}px
               </span>
             </div>
-            <input
-              type="number"
-              min="0"
-              value={rootFontSize}
-              onChange={(e) => {
-                const v = e.target.value;
-                setRootFontSize(
-                  v === "" ? "" : Math.max(0, parseFloat(v) || 0).toString(),
-                );
-              }}
-              className={`w-full px-3 py-2 rounded-lg border font-mono text-sm focus:outline-none focus:ring-2 focus:ring-zinc-500 ${
-                darkMode
-                  ? "bg-zinc-900 border-zinc-700 text-zinc-100 scheme-dark"
-                  : "bg-zinc-50 border-zinc-300 text-zinc-900 scheme-light"
-              }`}
-            />
+            {renderNumberInput(rootFontSize, setRootFontSize)}
           </div>
         )}
 
@@ -158,22 +236,7 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({
                 {parentFontSize}px
               </span>
             </div>
-            <input
-              type="number"
-              min="0"
-              value={parentFontSize}
-              onChange={(e) => {
-                const v = e.target.value;
-                setParentFontSize(
-                  v === "" ? "" : Math.max(0, parseFloat(v) || 0).toString(),
-                );
-              }}
-              className={`w-full px-3 py-2 rounded-lg border font-mono text-sm focus:outline-none focus:ring-2 focus:ring-zinc-500 ${
-                darkMode
-                  ? "bg-zinc-900 border-zinc-700 text-zinc-100 scheme-dark"
-                  : "bg-zinc-50 border-zinc-300 text-zinc-900 scheme-light"
-              }`}
-            />
+            {renderNumberInput(parentFontSize, setParentFontSize)}
           </div>
         )}
 
@@ -184,47 +247,13 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({
                 <label className="block text-xs font-medium mb-1.5 opacity-80">
                   Viewport Width
                 </label>
-                <input
-                  type="number"
-                  min="0"
-                  value={viewportWidth}
-                  onChange={(e) => {
-                    const v = e.target.value;
-                    setViewportWidth(
-                      v === ""
-                        ? ""
-                        : Math.max(0, parseFloat(v) || 0).toString(),
-                    );
-                  }}
-                  className={`w-full px-3 py-2 rounded-lg border font-mono text-sm focus:outline-none focus:ring-2 focus:ring-zinc-500 ${
-                    darkMode
-                      ? "bg-zinc-900 border-zinc-700 text-zinc-100 scheme-dark"
-                      : "bg-zinc-50 border-zinc-300 text-zinc-900 scheme-light"
-                  }`}
-                />
+                {renderNumberInput(viewportWidth, setViewportWidth, 10)}
               </div>
               <div>
                 <label className="block text-xs font-medium mb-1.5 opacity-80">
                   Viewport Height
                 </label>
-                <input
-                  type="number"
-                  min="0"
-                  value={viewportHeight}
-                  onChange={(e) => {
-                    const v = e.target.value;
-                    setViewportHeight(
-                      v === ""
-                        ? ""
-                        : Math.max(0, parseFloat(v) || 0).toString(),
-                    );
-                  }}
-                  className={`w-full px-3 py-2 rounded-lg border font-mono text-sm focus:outline-none focus:ring-2 focus:ring-zinc-500 ${
-                    darkMode
-                      ? "bg-zinc-900 border-zinc-700 text-zinc-100 scheme-dark"
-                      : "bg-zinc-50 border-zinc-300 text-zinc-900 scheme-light"
-                  }`}
-                />
+                {renderNumberInput(viewportHeight, setViewportHeight, 10)}
               </div>
             </div>
 
