@@ -155,13 +155,13 @@ export default function Page() {
 
   return (
     <div
-      className={`h-screen w-screen flex flex-col font-sans transition-colors duration-200 overflow-hidden ${
+      className={`fixed inset-0 h-dvh w-screen flex flex-col font-sans transition-colors duration-200 overflow-hidden select-none ${
         darkMode ? "bg-zinc-950 text-zinc-100" : "bg-zinc-50 text-zinc-900"
       }`}
     >
       <Navbar darkMode={darkMode} setDarkMode={setDarkMode} />
 
-      <div className="flex-1 flex relative overflow-hidden">
+      <div className="flex-1 flex relative overflow-hidden min-h-0">
         {/* Mobile Backdrop */}
         {isSidebarOpen && (
           <div
@@ -171,7 +171,7 @@ export default function Page() {
         )}
 
         <aside
-          className={`absolute lg:relative z-40 inset-y-0 left-0 w-80 sm:w-96 border-r flex flex-col transition-all duration-300 ease-in-out shadow-2xl lg:shadow-none shrink-0 ${
+          className={`absolute lg:relative z-40 inset-y-0 left-0 w-80 sm:w-96 border-r flex flex-col transition-all duration-300 ease-in-out shadow-2xl lg:shadow-none shrink-0 overflow-hidden ${
             isSidebarOpen
               ? "translate-x-0"
               : "-translate-x-full lg:w-0 lg:border-r-0 lg:overflow-hidden"
@@ -181,7 +181,7 @@ export default function Page() {
               : "bg-white/95 border-zinc-200 backdrop-blur-md"
           }`}
         >
-          <div className="p-4 sm:p-5 pb-3 flex items-center justify-between border-b border-zinc-700/30">
+          <div className="p-4 sm:p-5 pb-3 flex items-center justify-between border-b border-zinc-700/30 shrink-0">
             <h2 className="text-xs sm:text-sm font-semibold tracking-wide uppercase text-zinc-400">
               Control Panel
             </h2>
@@ -241,7 +241,7 @@ export default function Page() {
           </svg>
         </button>
 
-        <main className="flex-1 flex flex-col relative overflow-auto items-center justify-center w-full h-full">
+        <main className="flex-1 flex flex-col relative overflow-hidden items-center justify-center w-full h-full">
           <VisualizerCanvas
             darkMode={darkMode}
             computedPx={computedPx}
