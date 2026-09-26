@@ -63,8 +63,8 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({
             }}
             className={`w-full px-3 py-2 rounded-lg border font-mono text-sm focus:outline-none focus:ring-2 focus:ring-zinc-500 ${
               darkMode
-                ? "bg-zinc-900 border-zinc-700 text-zinc-100"
-                : "bg-zinc-50 border-zinc-300 text-zinc-900"
+                ? "bg-zinc-900 border-zinc-700 text-zinc-100 scheme-dark"
+                : "bg-zinc-50 border-zinc-300 text-zinc-900 scheme-light"
             }`}
             placeholder="e.g. 2"
           />
@@ -141,8 +141,8 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({
               }}
               className={`w-full px-3 py-2 rounded-lg border font-mono text-sm focus:outline-none focus:ring-2 focus:ring-zinc-500 ${
                 darkMode
-                  ? "bg-zinc-900 border-zinc-700 text-zinc-100"
-                  : "bg-zinc-50 border-zinc-300 text-zinc-900"
+                  ? "bg-zinc-900 border-zinc-700 text-zinc-100 scheme-dark"
+                  : "bg-zinc-50 border-zinc-300 text-zinc-900 scheme-light"
               }`}
             />
           </div>
@@ -170,8 +170,8 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({
               }}
               className={`w-full px-3 py-2 rounded-lg border font-mono text-sm focus:outline-none focus:ring-2 focus:ring-zinc-500 ${
                 darkMode
-                  ? "bg-zinc-900 border-zinc-700 text-zinc-100"
-                  : "bg-zinc-50 border-zinc-300 text-zinc-900"
+                  ? "bg-zinc-900 border-zinc-700 text-zinc-100 scheme-dark"
+                  : "bg-zinc-50 border-zinc-300 text-zinc-900 scheme-light"
               }`}
             />
           </div>
@@ -198,8 +198,8 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({
                   }}
                   className={`w-full px-3 py-2 rounded-lg border font-mono text-sm focus:outline-none focus:ring-2 focus:ring-zinc-500 ${
                     darkMode
-                      ? "bg-zinc-900 border-zinc-700 text-zinc-100"
-                      : "bg-zinc-50 border-zinc-300 text-zinc-900"
+                      ? "bg-zinc-900 border-zinc-700 text-zinc-100 scheme-dark"
+                      : "bg-zinc-50 border-zinc-300 text-zinc-900 scheme-light"
                   }`}
                 />
               </div>
@@ -221,8 +221,8 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({
                   }}
                   className={`w-full px-3 py-2 rounded-lg border font-mono text-sm focus:outline-none focus:ring-2 focus:ring-zinc-500 ${
                     darkMode
-                      ? "bg-zinc-900 border-zinc-700 text-zinc-100"
-                      : "bg-zinc-50 border-zinc-300 text-zinc-900"
+                      ? "bg-zinc-900 border-zinc-700 text-zinc-100 scheme-dark"
+                      : "bg-zinc-50 border-zinc-300 text-zinc-900 scheme-light"
                   }`}
                 />
               </div>
