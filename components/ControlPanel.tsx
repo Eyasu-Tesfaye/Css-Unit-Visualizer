@@ -60,20 +60,17 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({
   ) => {
     stopStepping();
 
-    // Immediate initial step
     const current = parseFloat(currentVal) || 0;
     const initialUpdated = Math.max(0, current + amount).toString();
     setter(initialUpdated);
 
-    // Keep track of the running value during hold
     let latestValue = parseFloat(initialUpdated) || 0;
 
-    // Delay before rapid continuous spinning starts on hold
     timeoutRef.current = setTimeout(() => {
       intervalRef.current = setInterval(() => {
         latestValue = Math.max(0, latestValue + amount);
         setter(latestValue.toString());
-      }, 70); // Speed of continuous spin
+      }, 70);
     }, 300);
   };
 
@@ -96,14 +93,14 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({
           const v = e.target.value;
           setter(v === "" ? "" : Math.max(0, parseFloat(v) || 0).toString());
         }}
-        className={`w-full px-3 py-2 rounded-lg border font-mono text-sm focus:outline-none focus:ring-2 focus:ring-zinc-500 lg:pr-3 pr-14 lg:[&::-webkit-inner-spin-button]:opacity-100 lg:[&::-webkit-outer-spin-button]:opacity-100 [&::-webkit-search-cancel-button]:hidden [&::-webkit-clear-button]:hidden ${
+        className={`w-full px-3 py-2 rounded-lg border font-mono text-sm focus:outline-none focus:ring-2 focus:ring-zinc-500 lg:pr-3 max-lg:pr-14 max-lg:[&::-webkit-search-cancel-button]:hidden max-lg:[&::-webkit-clear-button]:hidden max-lg:[&::-webkit-search-decoration]:hidden max-lg:[&::-webkit-search-results-button]:hidden max-lg:[&::-webkit-search-results-decoration]:hidden ${
           darkMode
             ? "bg-zinc-900 border-zinc-700 text-zinc-100 scheme-dark"
             : "bg-zinc-50 border-zinc-300 text-zinc-900 scheme-light"
         }`}
         placeholder="e.g. 2"
       />
-      {/* Stepper buttons visible on mobile and tablet only (hidden on lg desktop screens) */}
+      {/* Stepper buttons visible on mobile and tablet only with hold-to-spin */}
       <div className="absolute right-1 flex lg:hidden items-center space-x-0.5 select-none">
         <button
           type="button"
@@ -155,7 +152,7 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({
 
   return (
     <div className="space-y-4">
-      <div className="grid grid-cols-3 gap-3">
+      <div className="grid grid-cols-3 gap-3 items-end">
         <div className="col-span-2">
           <label className="block text-xs font-medium mb-1.5 opacity-80">
             Value
@@ -169,7 +166,7 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({
           <select
             value={unit}
             onChange={(e) => setUnit(e.target.value)}
-            className={`w-full px-3 py-2 rounded-lg border font-mono text-sm focus:outline-none focus:ring-2 focus:ring-zinc-500 ${
+            className={`w-full h-9.5 px-3 rounded-lg border font-mono text-sm focus:outline-none focus:ring-2 focus:ring-zinc-500 ${
               darkMode
                 ? "bg-zinc-900 border-zinc-700 text-zinc-100"
                 : "bg-zinc-50 border-zinc-300 text-zinc-900"
