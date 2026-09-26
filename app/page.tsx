@@ -185,12 +185,6 @@ export default function Page() {
             <h2 className="text-xs sm:text-sm font-semibold tracking-wide uppercase text-zinc-400">
               Control Panel
             </h2>
-            <button
-              onClick={() => setIsSidebarOpen(false)}
-              className="lg:hidden text-zinc-400 hover:text-zinc-100 p-1 rounded"
-            >
-              ✕
-            </button>
           </div>
 
           <div className="p-4 sm:p-5 flex-1 overflow-y-auto">
