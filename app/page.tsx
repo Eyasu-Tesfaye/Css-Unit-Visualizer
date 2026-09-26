@@ -155,13 +155,13 @@ export default function Page() {
 
   return (
     <div
-      className={`min-h-dvh w-screen flex flex-col font-sans transition-colors duration-200 select-none overflow-x-hidden ${
+      className={`h-screen w-screen flex flex-col font-sans transition-colors duration-200 overflow-hidden select-none ${
         darkMode ? "bg-zinc-950 text-zinc-100" : "bg-zinc-50 text-zinc-900"
       }`}
     >
       <Navbar darkMode={darkMode} setDarkMode={setDarkMode} />
 
-      <div className="flex-1 flex relative overflow-hidden min-h-[calc(100dvh-4rem)]">
+      <div className="flex-1 flex relative overflow-hidden min-h-0">
         {/* Mobile Backdrop */}
         {isSidebarOpen && (
           <div
