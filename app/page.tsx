@@ -217,8 +217,8 @@ export default function Page() {
             isSidebarOpen ? "left-80 sm:left-96" : "left-0"
           } ${
             darkMode
-              ? "bg-zinc-900 border-zinc-700 text-zinc-200 hover:bg-zinc-800"
-              : "bg-white border-zinc-300 text-zinc-800 hover:bg-zinc-100"
+              ? "bg-zinc-950/95 border-zinc-800 text-zinc-200 hover:bg-zinc-900 backdrop-blur-md"
+              : "bg-white/95 border-zinc-200 text-zinc-800 hover:bg-zinc-50 backdrop-blur-md"
           }`}
           title={
             isSidebarOpen ? "Collapse Control Panel" : "Expand Control Panel"
