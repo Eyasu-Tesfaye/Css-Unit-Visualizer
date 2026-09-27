@@ -226,7 +226,7 @@ export default function Page() {
         >
           <svg
             className={`w-4 h-4 transition-transform duration-300 ${
-              isSidebarOpen ? "" : "rotate-180"
+              isSidebarOpen ? "rotate-180" : ""
             }`}
             fill="none"
             viewBox="0 0 24 24"
