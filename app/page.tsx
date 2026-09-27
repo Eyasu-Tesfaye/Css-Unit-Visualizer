@@ -171,7 +171,7 @@ export default function Page() {
         )}
 
         <aside
-          className={`absolute lg:relative z-40 inset-y-0 left-0 w-80 sm:w-96 border-r flex flex-col transition-all duration-300 ease-in-out shadow-2xl lg:shadow-none shrink-0 overflow-hidden ${
+          className={`absolute lg:relative z-40 inset-y-0 left-0 w-80 sm:w-96 border-r flex flex-col transition-transform duration-300 ease-in-out shadow-2xl lg:shadow-none shrink-0 overflow-hidden ${
             isSidebarOpen
               ? "translate-x-0"
               : "-translate-x-full lg:w-0 lg:border-r-0 lg:overflow-hidden"
@@ -181,7 +181,7 @@ export default function Page() {
               : "bg-white/95 border-zinc-200 backdrop-blur-md"
           }`}
         >
-          <div className="p-4 sm:p-5 pb-3 flex items-center justify-between border-b border-zinc-700/30 shrink-0">
+          <div className="p-4 sm:p-5 pb-4 flex items-center justify-between border-b border-zinc-700/30 shrink-0">
             <h2 className="text-xs sm:text-sm font-semibold tracking-wide uppercase text-zinc-400">
               Control Panel
             </h2>
@@ -213,8 +213,8 @@ export default function Page() {
 
         <button
           onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-          className={`absolute top-4 z-40 p-2 rounded-r-lg border-y border-r shadow-xl transition-all duration-300 flex items-center justify-center ${
-            isSidebarOpen ? "left-80 sm:left-96" : "left-0"
+          className={`absolute top-4 left-0 z-40 px-3 py-2 rounded-r-[22px] border-y border-r border-l-0 shadow-xl transition-transform duration-300 ease-in-out flex items-center justify-center ${
+            isSidebarOpen ? "translate-x-80 sm:translate-x-96" : "translate-x-0"
           } ${
             darkMode
               ? "bg-zinc-950/95 border-zinc-800 text-zinc-200 hover:bg-zinc-900 backdrop-blur-md"
