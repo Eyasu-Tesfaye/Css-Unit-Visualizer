@@ -162,17 +162,15 @@ export default function Page() {
       <Navbar darkMode={darkMode} setDarkMode={setDarkMode} />
 
       <div className="flex-1 flex relative overflow-hidden min-h-0">
-        {/* Smooth Persistent Backdrop: Fades gracefully without unmounting lag */}
-        <div
-          onClick={() => setIsSidebarOpen(false)}
-          className={`absolute inset-0 bg-black/60 z-30 lg:hidden transition-opacity duration-300 ease-in-out ${
-            isSidebarOpen
-              ? "opacity-100 pointer-events-auto"
-              : "opacity-0 pointer-events-none"
-          }`}
-        />
+        {/* Mobile Backdrop */}
+        {isSidebarOpen && (
+          <div
+            onClick={() => setIsSidebarOpen(false)}
+            className="absolute inset-0 bg-black/50 z-30 lg:hidden backdrop-blur-xs transition-opacity"
+          />
+        )}
 
-        {/* Sidebar Container */}
+        {/* Sidebar */}
         <aside
           className={`absolute lg:relative z-40 inset-y-0 left-0 w-80 sm:w-96 border-r flex flex-col transition-all duration-300 ease-in-out shadow-2xl lg:shadow-none shrink-0 will-change-transform ${
             isSidebarOpen
@@ -251,7 +249,6 @@ export default function Page() {
           </button>
         </aside>
 
-        {/* Main Canvas Area */}
         <main className="flex-1 flex flex-col relative overflow-hidden items-center justify-center w-full h-full">
           <VisualizerCanvas
             darkMode={darkMode}
