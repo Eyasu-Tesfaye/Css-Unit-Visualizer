@@ -117,22 +117,17 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({
         }`}
         placeholder="e.g. 2"
       />
-      {/* Stepper buttons visible on mobile and tablet only with hold-to-spin */}
+      {/* Stepper buttons unified with Pointer Events to prevent mobile double-firing */}
       <div className="absolute right-1 flex lg:hidden items-center space-x-0.5 select-none">
         <button
           type="button"
-          onMouseDown={(e) => {
+          onPointerDown={(e) => {
             e.preventDefault();
             startStepping(val, setter, -stepAmount, minLimit, maxLimit);
           }}
-          onMouseUp={stopStepping}
-          onMouseLeave={stopStepping}
-          onTouchStart={(e) => {
-            e.preventDefault();
-            startStepping(val, setter, -stepAmount, minLimit, maxLimit);
-          }}
-          onTouchEnd={stopStepping}
-          className={`w-6 h-7 flex items-center justify-center rounded text-xs font-mono transition-colors cursor-pointer ${
+          onPointerUp={stopStepping}
+          onPointerLeave={stopStepping}
+          className={`w-6 h-7 flex items-center justify-center rounded text-xs font-mono transition-colors cursor-pointer touch-none ${
             darkMode
               ? "bg-zinc-800 text-zinc-300 active:bg-zinc-700"
               : "bg-zinc-200 text-zinc-700 active:bg-zinc-300"
@@ -143,18 +138,13 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({
         </button>
         <button
           type="button"
-          onMouseDown={(e) => {
+          onPointerDown={(e) => {
             e.preventDefault();
             startStepping(val, setter, stepAmount, minLimit, maxLimit);
           }}
-          onMouseUp={stopStepping}
-          onMouseLeave={stopStepping}
-          onTouchStart={(e) => {
-            e.preventDefault();
-            startStepping(val, setter, stepAmount, minLimit, maxLimit);
-          }}
-          onTouchEnd={stopStepping}
-          className={`w-6 h-7 flex items-center justify-center rounded text-xs font-mono transition-colors cursor-pointer ${
+          onPointerUp={stopStepping}
+          onPointerLeave={stopStepping}
+          className={`w-6 h-7 flex items-center justify-center rounded text-xs font-mono transition-colors cursor-pointer touch-none ${
             darkMode
               ? "bg-zinc-800 text-zinc-300 active:bg-zinc-700"
               : "bg-zinc-200 text-zinc-700 active:bg-zinc-300"
