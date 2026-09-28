@@ -57,18 +57,26 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({
     currentVal: string,
     setter: (val: string) => void,
     amount: number,
+    minLimit = 0,
+    maxLimit = Infinity,
   ) => {
     stopStepping();
 
     const current = parseFloat(currentVal) || 0;
-    const initialUpdated = Math.max(0, current + amount).toString();
+    const initialUpdated = Math.min(
+      maxLimit,
+      Math.max(minLimit, current + amount),
+    ).toString();
     setter(initialUpdated);
 
     let latestValue = parseFloat(initialUpdated) || 0;
 
     timeoutRef.current = setTimeout(() => {
       intervalRef.current = setInterval(() => {
-        latestValue = Math.max(0, latestValue + amount);
+        latestValue = Math.min(
+          maxLimit,
+          Math.max(minLimit, latestValue + amount),
+        );
         setter(latestValue.toString());
       }, 70);
     }, 300);
@@ -82,16 +90,25 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({
     val: string,
     setter: (v: string) => void,
     stepAmount = 1,
+    minLimit = 0,
+    maxLimit = Infinity,
   ) => (
     <div className="relative flex items-center">
       <input
         type="number"
-        min="0"
+        min={minLimit}
+        max={maxLimit}
         step="any"
         value={val}
         onChange={(e) => {
           const v = e.target.value;
-          setter(v === "" ? "" : Math.max(0, parseFloat(v) || 0).toString());
+          if (v === "") {
+            setter("");
+            return;
+          }
+          const parsed = parseFloat(v) || 0;
+          const clamped = Math.min(maxLimit, Math.max(minLimit, parsed));
+          setter(clamped.toString());
         }}
         className={`w-full px-3 py-2 rounded-lg border font-mono text-sm focus:outline-none focus:ring-2 focus:ring-zinc-500 lg:pr-3 max-lg:pr-14 max-lg:[&::-webkit-search-cancel-button]:hidden max-lg:[&::-webkit-clear-button]:hidden max-lg:[&::-webkit-search-decoration]:hidden max-lg:[&::-webkit-search-results-button]:hidden max-lg:[&::-webkit-search-results-decoration]:hidden ${
           darkMode
@@ -106,13 +123,13 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({
           type="button"
           onMouseDown={(e) => {
             e.preventDefault();
-            startStepping(val, setter, -stepAmount);
+            startStepping(val, setter, -stepAmount, minLimit, maxLimit);
           }}
           onMouseUp={stopStepping}
           onMouseLeave={stopStepping}
           onTouchStart={(e) => {
             e.preventDefault();
-            startStepping(val, setter, -stepAmount);
+            startStepping(val, setter, -stepAmount, minLimit, maxLimit);
           }}
           onTouchEnd={stopStepping}
           className={`w-6 h-7 flex items-center justify-center rounded text-xs font-mono transition-colors cursor-pointer ${
@@ -128,13 +145,13 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({
           type="button"
           onMouseDown={(e) => {
             e.preventDefault();
-            startStepping(val, setter, stepAmount);
+            startStepping(val, setter, stepAmount, minLimit, maxLimit);
           }}
           onMouseUp={stopStepping}
           onMouseLeave={stopStepping}
           onTouchStart={(e) => {
             e.preventDefault();
-            startStepping(val, setter, stepAmount);
+            startStepping(val, setter, stepAmount, minLimit, maxLimit);
           }}
           onTouchEnd={stopStepping}
           className={`w-6 h-7 flex items-center justify-center rounded text-xs font-mono transition-colors cursor-pointer ${
@@ -244,13 +261,25 @@ export const ControlPanel: React.FC<ControlPanelProps> = ({
                 <label className="block text-xs font-medium mb-1.5 opacity-80">
                   Viewport Width
                 </label>
-                {renderNumberInput(viewportWidth, setViewportWidth, 10)}
+                {renderNumberInput(
+                  viewportWidth,
+                  setViewportWidth,
+                  10,
+                  100,
+                  2560,
+                )}
               </div>
               <div>
                 <label className="block text-xs font-medium mb-1.5 opacity-80">
                   Viewport Height
                 </label>
-                {renderNumberInput(viewportHeight, setViewportHeight, 10)}
+                {renderNumberInput(
+                  viewportHeight,
+                  setViewportHeight,
+                  10,
+                  100,
+                  2160,
+                )}
               </div>
             </div>
 
