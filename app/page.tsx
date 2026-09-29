@@ -150,8 +150,8 @@ export default function Page() {
   const isTiny = computedPx < 70;
 
   const isMobile = windowWidth < 640;
-  const maxWidthCap = isMobile ? 320 : 520;
-  const maxHeightCap = isMobile ? 480 : 380;
+  const maxWidthCap = isMobile ? 320 : Math.min(windowWidth - 450, 800);
+  const maxHeightCap = isMobile ? 480 : 420;
 
   return (
     <div
