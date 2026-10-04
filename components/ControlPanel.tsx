@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useRef, useEffect, useState, useCallback } from "react";
+import { CodeExporter } from "./CodeExporter";
 
 interface ControlPanelProps {
   darkMode: boolean;
@@ -419,6 +420,12 @@ export const ControlPanel: React.FC<ControlPanelProps> = React.memo(
             {conversion.formula}
           </div>
         </div>
+        <CodeExporter
+          darkMode={darkMode}
+          value={value}
+          unit={unit}
+          calculatedPx={conversion.px}
+        />
       </div>
     );
   },
