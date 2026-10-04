@@ -20,10 +20,8 @@ export const CodeExporter: React.FC<CodeExporterProps> = ({
 
   const displayValue = value || "0";
 
-  // Fix JS floating-point precision issues completely
   const roundedPx = parseFloat((Math.round(calculatedPx * 10) / 10).toFixed(1));
 
-  // The generated CSS string using the clean rounded value
   const cssSnippet = `.your-element {\n  property: ${displayValue}${unit}; /* approx. ${roundedPx}px */\n}`;
 
   const copyToClipboard = useCallback(() => {
@@ -43,7 +41,7 @@ export const CodeExporter: React.FC<CodeExporterProps> = ({
     >
       {/* Header and Copy Button */}
       <div className="flex items-center justify-between mb-3">
-        <span className="text-xs font-bold uppercase tracking-wider text-zinc-500">
+        <span className="text-xs font-medium uppercase tracking-wider text-zinc-500">
           Export CSS
         </span>
         <button
@@ -72,13 +70,13 @@ export const CodeExporter: React.FC<CodeExporterProps> = ({
         </button>
       </div>
 
-      {/* Code Block Display */}
+      {/* Code Block Display with Responsive Text Wrapping */}
       <pre
         className={`p-3 rounded-lg overflow-x-auto ${
           darkMode ? "bg-zinc-950" : "bg-white"
         }`}
       >
-        <code>{cssSnippet}</code>
+        <code className="whitespace-pre-wrap break-all">{cssSnippet}</code>
       </pre>
 
       {/* Optional hint */}

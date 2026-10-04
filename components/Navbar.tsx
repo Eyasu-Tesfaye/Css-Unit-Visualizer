@@ -24,7 +24,7 @@ export const Navbar: React.FC<NavbarProps> = ({ darkMode, setDarkMode }) => {
           <h1 className="text-sm sm:text-base md:text-lg font-semibold tracking-tight flex items-center gap-2 truncate">
             <span className="truncate">CSScope</span>
             <span className="text-[10px] px-1.5 py-0.5 rounded-full font-mono bg-zinc-800 text-zinc-300 border border-zinc-700 shrink-0">
-              V1.0
+              V1.1
             </span>
           </h1>
           <p
