@@ -76,7 +76,9 @@ export const CodeExporter: React.FC<CodeExporterProps> = ({
           darkMode ? "bg-zinc-950" : "bg-white"
         }`}
       >
-        <code className="whitespace-pre-wrap break-all">{cssSnippet}</code>
+        <code className="whitespace-pre text-[10px] sm:text-[11px] md:text-xs block">
+          {cssSnippet}
+        </code>
       </pre>
 
       {/* Optional hint */}
