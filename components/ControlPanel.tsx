@@ -2,6 +2,7 @@
 
 import React, { useRef, useEffect, useState, useCallback } from "react";
 import { CodeExporter } from "./CodeExporter";
+import { PresetScenarios } from "./PresetScenarios";
 
 interface ControlPanelProps {
   darkMode: boolean;
@@ -192,6 +193,16 @@ export const ControlPanel: React.FC<ControlPanelProps> = React.memo(
 
     return (
       <div className="space-y-4">
+        <PresetScenarios
+          darkMode={darkMode}
+          onSelectPreset={(preset) => {
+            setValue(preset.value);
+            setUnit(preset.unit);
+            if (preset.root) setRootFontSize(preset.root);
+            if (preset.parent) setParentFontSize(preset.parent);
+            if (preset.viewportWidth) setViewportWidth(preset.viewportWidth);
+          }}
+        />
         <div className="grid grid-cols-3 gap-3 items-end">
           <div className="col-span-2">
             <label className="block text-xs font-medium mb-1.5 opacity-80">
